@@ -21,7 +21,7 @@ function Invoke-OpenSSL {
     )
 
     #region Find openssl
-    if ( -not ( get-command openssl.exe ) ) { 
+    if ( -not ( get-command openssl.exe -ErrorAction SilentlyContinue ) ) { 
         $GitPath = (Get-ItemProperty -Path HKLM:\SOFTWARE\GitForWindows).InstallPath
         if ( test-path $GitPath\usr\bin\openssl.exe ) {
             $env:path += ";$GitPath\usr\bin"
@@ -37,27 +37,32 @@ function Invoke-OpenSSL {
 
     #region Populate environment with passwords.
 
-    $PassIn = $null 
-    $passOut = $null
+    $PassInName = $null 
+    $passOutName = $null
     for ( $i = 0; $i -le $commands.Length ; $i++ ) {
         if ( $commands[$i] -eq '-passin' -and $commands[$i+1].StartsWith('env:') ) { 
-            write-verbose "PassIn: [$($commands[$i])] and [$($commands[$i+1])]"
-            $PassIn = $commands[$i+1].Split(':')[1]
-            set-item "env:$($PassIn)" -Value (New-Object PSCredential 0, $PassIn).GetNetworkCredential().Password
+            write-verbose "PassIn: [$($commands[$i])] and [$($commands[$i+1])]   $($PassIn.GetType())"
+            $PassInName = $commands[$i+1].Split(':')[1]
+            set-item "env:$($PassInName)" -Value (New-Object PSCredential 0, $PassIn).GetNetworkCredential().Password
         }
         elseif ( $commands[$i] -eq '-passout' -and $commands[$i+1].StartsWith('env:') ) { 
-            write-verbose "Passout: [$($commands[$i])] and [$($commands[$i+1])]"
-            $passOut = $commands[$i+1].Split(':')[1]
-            set-item "env:$($passOut)" -Value (New-Object PSCredential 0, $passOut).GetNetworkCredential().Password
+            write-verbose "Passout: [$($commands[$i])] and [$($commands[$i+1])]   $($passOut.GetType())"
+            $passOutName = $commands[$i+1].Split(':')[1]
+            set-item "env:$($passOutName)" -Value (New-Object PSCredential 0, $passOut).GetNetworkCredential().Password
         }        
     }
 
     #endregion
 
     # Invoke OpenSSL.exe
-    write-verbose "OpenSSL.exe $($OpenSSLArgs -join ' ')"
-    & OpenSSL.exe $OpenSSLArgs | write-verbose
+    write-verbose "OpenSSL.exe $($commands -join ' ')"
+    & OpenSSL.exe $commands | write-verbose
     
-    remove-item "env:$($PassIn)","env:$($passOut)" -ErrorAction SilentlyContinue
+    if ( $PassInName -ne $null ) {
+        remove-item "env:$($PassInName)"
+    }
+    if ( $passOutName -ne $null ) {
+        remove-item "env:$($passOutName)"
+    }
 
 }
