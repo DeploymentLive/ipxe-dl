@@ -1,3 +1,4 @@
+function Invoke-iPXEPreCompiler {
 <#
 .Synopsis
     iPXE Script Pre-Processor
@@ -43,7 +44,7 @@ Param (
     [int] $StartingLabel = 0
 )
 
-if ( $StartingLabel -eq 0 ) { cls }
+# if ( $StartingLabel -eq 0 ) { cls }
 
 $CommandStack = [System.Collections.Stack]::new()
 
@@ -65,9 +66,6 @@ foreach ( $line in Get-Content -Path $path ) {
     #region INCLUDE
     elseif ( $line -match '^\s*\#?(INCLUDE|include)\b\s*(?<Path>[^\#]*)\s*(\#.*)?$' ) {
         # example: #include <path> # Comments...
-
-        
-
         "# $($line)" | write-output          
 
         #Find include file, it could be in several places:
@@ -326,4 +324,5 @@ goto `${$($label)_returnto}
 if ( $commandStack.Count -ne 0 ) { 
     $commandStack | ft | out-string | Write-verbose
     throw "Extra commands left on stack"
+}
 }
