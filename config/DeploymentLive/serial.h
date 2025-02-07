@@ -19,8 +19,3 @@
 #define	COMPARITY	0		/* Parity: 0=None, 1=Odd, 2=Even */
 #define	COMSTOP		1		/* Stop bits */
 #endif
-
-#include <config/named.h>
-#include NAMED_CONFIG(serial.h)
-#include <config/local/serial.h>
-#include LOCAL_NAMED_CONFIG(serial.h)
