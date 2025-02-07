@@ -43,7 +43,7 @@ invoke-openssl -PassOut $CAPassword.password -Commands @(
 )
 
 # Output for debugging
-Invoke-OpenSSL -commands ( "x509 -in $TargetDir\DeploymentLive.crt -text" -split ' ' ) | Write-Verbose
+Invoke-OpenSSL -commands ( "x509 -in $TargetDir\ca.crt -text" -split ' ' ) | Write-Verbose
 
 #endregion 
 
