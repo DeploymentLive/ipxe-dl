@@ -5,7 +5,7 @@ function Compare-FilesIfNewer {
     .DESCRIPTION
         Use like a Make function to only return TRUE if the source files have a newer date (have changed).
     .EXAMPLE
-        if ( Compare-FilesIfNewer -dest target.exe -sources @( source.c,source.res ) ) {
+        if ( Compare-FilesIfNewer -dest target.exe -Path @( source.c,source.res ) ) {
             cc -out target.exe source.c -r source.res
         }
     #>
@@ -13,7 +13,7 @@ function Compare-FilesIfNewer {
     [CmdletBinding()]
     param (
         [string] $Dest,
-        [string[]] $sources
+        [string[]] $Path
     )
 
     if ( -not (test-path $dest) ) {
@@ -23,9 +23,9 @@ function Compare-FilesIfNewer {
 
     $DestDate = (get-item $dest).LastWriteTime
 
-    foreach ( $source in $Sources ) {
-        if ( (get-Item $source).LastWriteTime -gt $DestDate ) {
-            write-verbose "File is Newer: $Source"
+    foreach ( $File in $Path ) {
+        if ( (get-Item $File).LastWriteTime -gt $DestDate ) {
+            write-verbose "File is Newer: $File"
             return $true
         }
     }
