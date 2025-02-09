@@ -259,7 +259,7 @@ goto $($label)_$($target)
 
 @"
 # $Line
-set $($matches.name.tolower())_return $($label)_returnpoint
+set $($matches.name.tolower())_returnto $($label)_returnpoint
 goto sub_$($matches.name.tolower()) ||
 :$($label)_returnpoint
 
@@ -292,7 +292,7 @@ goto $($label)_end
 @"
 # $($Line)
 :$($label)_end
-goto `${$($label)_returnto}
+goto `${$($label)_returnto} ||
 "@ | write-output
        
     }
