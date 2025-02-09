@@ -82,9 +82,9 @@
  * 802.11 cryptosystems and handshaking protocols
  *
  */
-#undef	CRYPTO_80211_WEP	/* WEP encryption (deprecated and insecure!) */
-#undef	CRYPTO_80211_WPA	/* WPA Personal, authenticating with passphrase */
-#undef	CRYPTO_80211_WPA2	/* Add support for stronger WPA cryptography */
+// #undef	CRYPTO_80211_WEP	/* WEP encryption (deprecated and insecure!) */
+// #undef	CRYPTO_80211_WPA	/* WPA Personal, authenticating with passphrase */
+// #undef	CRYPTO_80211_WPA2	/* Add support for stronger WPA cryptography */
 
 /*
  * 802.1x EAP authentication methods
@@ -110,7 +110,7 @@
 //#define	IMAGE_NBI		/* NBI image support */
 //#define	IMAGE_ELF		/* ELF image support */
 //#define	IMAGE_MULTIBOOT		/* MultiBoot image support */
-#define	IMAGE_PXE		/* PXE image support */
+// #define	IMAGE_PXE		/* PXE image support */
 //#define	IMAGE_SCRIPT		/* iPXE script image support */
 //#define	IMAGE_BZIMAGE		/* Linux bzImage image support */
 //#define	IMAGE_COMBOOT		/* SYSLINUX COMBOOT image support */
